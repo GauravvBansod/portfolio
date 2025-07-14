@@ -113,6 +113,15 @@ class _HomePageState extends State<HomePage> {
                               ],
                             ),
                           ),
+                          boxH20(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              _skillsTap("Flutter", "assets/skils/flutter.png"),
+                              _skillsTap("Dart", "assets/skils/dart.png"),
+                              _skillsTap("Firebase", "assets/skils/firebase.png"),
+                            ],
+                          ),
                           const Spacer(),
                           const Text(
                             "1 YEARS",
@@ -143,9 +152,9 @@ class _HomePageState extends State<HomePage> {
                       flex: 3,
                       child: Column(
                         children: [
-                          boxH50(),
+                          boxH40(),
                           Container(
-                            height: size.height * 0.6,
+                            height: size.height * 0.8,
                             color: Colors.transparent,
                             child: Image.asset('assets/backgrounds/bg_with_img.png'),
                           ),
@@ -312,6 +321,29 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         child: Text(title),
+      ),
+    );
+  }
+
+  Widget _skillsTap(String title,String ioc_img) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: TextButton.icon(
+        onPressed: () {
+
+        },
+        style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all(Colors.teal.withOpacity(0.1)),
+          foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                (Set<MaterialState> states) {
+              return states.contains(MaterialState.hovered)
+                  ? Colors.teal
+                  : Colors.black87;
+            },
+          ),
+        ),
+        label: Text(title,style: TextStyle(fontWeight: FontWeight.bold,),),
+        icon: Image.asset(ioc_img,height: 30,),
       ),
     );
   }

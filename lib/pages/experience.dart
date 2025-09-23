@@ -1,21 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:portfolio/utils/CommonSizedBox.dart';
+import 'package:portfolio/pages/about_me.dart';
+import 'package:portfolio/utils/CommonSizedBox.dart'; // Assuming this provides boxH() helpers
 
 class ExperienceScreen extends StatelessWidget {
   const ExperienceScreen({super.key});
 
+  final List<Map<String, dynamic>> experiences = const [
+    {
+      'company': 'Samruddh Bharat Technologies Pvt Ltd',
+      'location': 'Pune, India',
+      'role': 'Jr. Flutter Developer',
+      'duration': 'July 2025 - Present',
+      'icon': Icons.work_outline_rounded,
+      'color': Colors.orange,
+    },
+    {
+      'company': 'Geobull Innovations LLP',
+      'location': 'Pune, India',
+      'role': 'Jr. Flutter Developer',
+      'duration': 'May 2024 - July 2025',
+      'icon': Icons.work_outline_rounded,
+      'color': Colors.orange,
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
     return Container(
-      width: screenSize.width,
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+      width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 60),
       color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          boxH20(),
           Text(
             'Experience',
             style: GoogleFonts.poppins(
@@ -24,142 +42,122 @@ class ExperienceScreen extends StatelessWidget {
               color: Colors.teal,
             ),
           ),
-          boxH15(),
-          _buildTimeline(context),
+          boxH(8),
+          Text(
+            "My professional journey so far.",
+            style: GoogleFonts.poppins(fontSize: 16, color: Colors.black54),
+          ),
+          boxH(40),
+          // --- MODIFIED: Using a new widget for the list ---
+          _buildExperienceList(),
         ],
       ),
     );
   }
 
-  Widget _buildTimeline(BuildContext context) {
-    final experiences = [
-      {
-        'company': 'Samruddh Bharat Technologies pvt ltd',
-        'location': 'Pune, India',
-        'role': 'Jr.Flutter Developer',
-        'duration': 'July 2025 - Present',
-        'description': 'Contributing to full-cycle app development, from UI design and code architecture to API integration and performance tuning. Building scalable, high-performance mobile applications for Android and iOS using Flutter and Dart.',
-        'icon': Icons.work,
-      },
-
-      {
-        'company': 'Geobull Innovations LLP',
-        'location': 'Pune, India',
-        'role': 'Jr.Flutter Developer',
-        'duration': 'May 2024 - July 2025',
-        'description': 'Developed responsive and intuitive mobile applications with a focus on clean code, state management using GetX and Provider, and integration with RESTful APIs. Collaborated with cross-functional teams to deliver client-focused solutions.',
-        'icon': Icons.work,
-      },
-
-    ];
-
+  // --- NEW WIDGET: Builds the list of experience cards ---
+  Widget _buildExperienceList() {
     return Container(
-      constraints: BoxConstraints(maxWidth: 1000),
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: experiences.length,
-        itemBuilder: (context, index) {
-          final experience = experiences[index];
+      constraints: const BoxConstraints(maxWidth: 800),
+      child: Column(
+        children: experiences.map((exp) {
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Timeline Dot and Line
-                Column(
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.teal.withOpacity(0.1),
-                        border: Border.all(color: Colors.teal, width: 2),
-                      ),
-                      child: Icon(
-                        experience['icon'] as IconData,
-                        color: Colors.teal,
-                        size: 24,
-                      ),
-                    ),
-                    if (index < experiences.length - 1)
-                      Container(
-                        width: 2,
-                        height: 100,
-                        color: Colors.teal.withOpacity(0.3),
-                      ),
-                  ],
-                ),
-                const SizedBox(width: 20),
-                // Experience Card
-                Expanded(
-                  child: Card(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade50,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            experience['company'] as String,
-                            style: GoogleFonts.poppins(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
-                            ),
-                          ),
-                          boxH08(),
-                          Text(
-                            experience['role'] as String,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.teal,
-                            ),
-                          ),
-                          boxH08(),
-                          Text(
-                            experience['location'] as String,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey.shade600,
-                            ),
-                          ),
-                          boxH08(),
-                          Text(
-                            experience['duration'] as String,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey.shade600,
-                            ),
-                          ),
-                          boxH15(),
-                          Text(
-                            experience['description'] as String,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.black87,
-                              height: 1.6,
-                            ),
-                            textAlign: TextAlign.justify,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+            padding: const EdgeInsets.only(bottom: 20.0),
+            child: _buildExperienceCard(
+              icon: exp['icon'],
+              role: exp['role'],
+              company: exp['company'],
+              duration: exp['duration'],
+              location: exp['location'],
+              color: exp['color'],
             ),
           );
-        },
+        }).toList(),
+      ),
+    );
+  }
+
+  // --- NEW WIDGET: Defines the appearance of a single experience card ---
+  Widget _buildExperienceCard({
+    required IconData icon,
+    required String role,
+    required String company,
+    required String duration,
+    required String location,
+    required Color color,
+  }) {
+    return Card(
+      elevation: 4,
+      shadowColor: Colors.black.withOpacity(0.1),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey.shade50,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Icon on the left
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: color.withOpacity(0.1),
+              ),
+              child: Icon(icon, color: color, size: 28),
+            ),
+            const SizedBox(width: 20),
+            // Details on the right
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    role,
+                    style: GoogleFonts.poppins(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  boxH(4),
+                  Text(
+                    company,
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black54,
+                    ),
+                  ),
+                  boxH(12),
+                  Row(
+                    children: [
+                      Icon(Icons.calendar_today_outlined, size: 14, color: Colors.grey.shade600),
+                      const SizedBox(width: 8),
+                      Text(
+                        duration,
+                        style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
+                      ),
+                    ],
+                  ),
+                  boxH(8),
+                  Row(
+                    children: [
+                      Icon(Icons.location_on_outlined, size: 14, color: Colors.grey.shade600),
+                      const SizedBox(width: 8),
+                      Text(
+                        location,
+                        style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

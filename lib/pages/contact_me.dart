@@ -108,10 +108,10 @@ class _ContactMeState extends State<ContactMe> {
     return Row(
       children: [
         // Left side with image and social links
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Expanded(
-            flex: 2,
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
             child: Container(
               padding: const EdgeInsets.all(40),
               decoration: BoxDecoration(

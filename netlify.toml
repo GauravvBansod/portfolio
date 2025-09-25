@@ -1,0 +1,7 @@
+[build]
+publish = "build/web"
+command = "flutter build web"
+
+[build.environment]
+NODE_VERSION = "20"
+FLUTTER_VERSION = "3.32.2"

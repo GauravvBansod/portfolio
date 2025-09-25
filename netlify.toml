@@ -5,3 +5,8 @@ command = "flutter build web"
 [build.environment]
 NODE_VERSION = "20"
 FLUTTER_VERSION = "3.32.2"
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200

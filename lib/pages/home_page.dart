@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portfolio/controllers/home_controller.dart';
 import 'package:portfolio/pages/Experience.dart';
+import 'package:portfolio/pages/about_me.dart';
 import 'package:portfolio/pages/contact_me.dart';
 import 'package:portfolio/pages/download_resume_builder.dart';
 import 'package:portfolio/pages/loading/loading_widget.dart';
@@ -22,6 +23,7 @@ class _HomePageState extends State<HomePage> {
   final ScrollController _scrollController = ScrollController();
 
   final GlobalKey _landingKey = GlobalKey();
+  final GlobalKey _aboutKey = GlobalKey();
   final GlobalKey _experienceKey = GlobalKey();
   final GlobalKey _projectKey = GlobalKey();
   final GlobalKey _contactKey = GlobalKey();
@@ -64,7 +66,7 @@ class _HomePageState extends State<HomePage> {
     final isMobile = MediaQuery.of(context).size.width < 1000;
     return AppBar(
       backgroundColor: Colors.grey.shade100,
-      elevation: 0, // Removes the shadow
+      elevation: 0,
       title: GestureDetector(
         onTap: () => _scrollToSection(_landingKey),
         child: Text(
@@ -82,7 +84,9 @@ class _HomePageState extends State<HomePage> {
         PopupMenuButton<String>(
           icon: const Icon(Icons.menu, color: Colors.teal),
           onSelected: (value) {
-            if (value == 'Experience') {
+            if (value == 'About') {
+              _scrollToSection(_aboutKey);
+            } else if (value == 'Experience') {
               _scrollToSection(_experienceKey);
             } else if (value == 'Project') {
               _scrollToSection(_projectKey);
@@ -91,22 +95,16 @@ class _HomePageState extends State<HomePage> {
             }
           },
           itemBuilder: (BuildContext context) => [
-            const PopupMenuItem(
-              value: 'Experience',
-              child: Text('Experience'),
-            ),
-            const PopupMenuItem(
-              value: 'Project',
-              child: Text('Project'),
-            ),
-            const PopupMenuItem(
-              value: 'Contact',
-              child: Text('Contact'),
-            ),
+            const PopupMenuItem(value: 'About', child: Text('About')),
+            const PopupMenuItem(value: 'Experience', child: Text('Experience')),
+            const PopupMenuItem(value: 'Project', child: Text('Project')),
+            const PopupMenuItem(value: 'Contact', child: Text('Contact')),
           ],
         ),
       ]
           : [
+        _navButton("About", () => _scrollToSection(_aboutKey)),
+        boxW15(),
         _navButton("Experience", () => _scrollToSection(_experienceKey)),
         boxW15(),
         _navButton("Project", () => _scrollToSection(_projectKey)),
@@ -123,7 +121,7 @@ class _HomePageState extends State<HomePage> {
       controller: _scrollController,
       child: Column(
         children: [
-          // first screen
+          // Landing Section
           Container(
             key: _landingKey,
             width: size.width,
@@ -178,9 +176,11 @@ class _HomePageState extends State<HomePage> {
                             ),
                             child: AnimatedTextKit(
                               repeatForever: true,
-                              pause: const Duration(milliseconds: 2000),
+                              pause: const Duration(milliseconds: 1500),
                               animatedTexts: [
                                 TyperAnimatedText('Flutter Developer'),
+                                TyperAnimatedText('Mobile App Developer'),
+                                TyperAnimatedText('BLoC/Cubit Specialist'),
                               ],
                             ),
                           ),
@@ -194,13 +194,15 @@ class _HomePageState extends State<HomePage> {
                           _skillsTap("Flutter", "assets/skils/flutter.png"),
                           _skillsTap("Dart", "assets/skils/dart.png"),
                           _skillsTap("Firebase", "assets/skils/firebase.png"),
-                          _skillsTap("Bloc", "assets/skils/bloc.png"),
+                          _skillsTap("BLoC", "assets/skils/bloc.png"),
                           _skillsTap("GetX", "assets/skils/getX.png"),
                           _skillsTap("Github", "assets/skils/github.png"),
                           _skillsTap("Java", "assets/skils/java.png"),
                           _skillsTap("UI/UX", "assets/skils/ui.png"),
                           _skillsTap("Android", "assets/skils/social.png"),
-                          _skillsTap("IOS", "assets/skils/apple.png"),
+                          _skillsTap("iOS", "assets/skils/apple.png"),
+                          _skillsTap("Postman", "assets/skils/postman.png"),
+                          _skillsTap("Razorpay", "assets/skils/razorpay.png"),
                         ],
                       ),
                       Center(
@@ -219,7 +221,7 @@ class _HomePageState extends State<HomePage> {
                             const Text(
                               "E  X  P  E  R  I  E  N  C  E",
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 18,
                                 color: Colors.black87,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -227,34 +229,31 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                       ),
-                      boxH20(),
                     ],
                   ),
                 ),
-                const SizedBox(width: 40),
-                // Right Part
+                // Right Part — illustration
                 Expanded(
                   flex: 2,
-                  child: Column(
-                    children: [
-                      boxH40(),
-                      Container(
-                        height: size.height * 0.8,
-                        color: Colors.transparent,
-                        child: Image.asset('assets/backgrounds/img.webp'),
-                      ),
-                    ],
+                  child: Center(
+                    child: Image.asset('assets/backgrounds/img.webp'),
                   ),
                 ),
               ],
             ),
           ),
-          Divider(color: Colors.grey.shade200, thickness: 2),
+          // About Me Section
+          Container(
+            key: _aboutKey,
+            width: size.width,
+            color: Colors.grey.shade50,
+            alignment: Alignment.center,
+            child: const AboutMeSection(),
+          ),
           // Experience Section
           Container(
             key: _experienceKey,
             width: size.width,
-            height: size.height,
             color: Colors.white,
             alignment: Alignment.center,
             child: const ExperienceScreen(),
@@ -263,7 +262,6 @@ class _HomePageState extends State<HomePage> {
           Container(
             key: _projectKey,
             width: size.width,
-            height: size.height,
             color: Colors.grey.shade200,
             alignment: Alignment.center,
             child: const ProjectScreen(),
@@ -272,7 +270,6 @@ class _HomePageState extends State<HomePage> {
           Container(
             key: _contactKey,
             width: size.width,
-            height: size.height,
             color: Colors.white,
             alignment: Alignment.center,
             child: const ContactMe(),
@@ -335,9 +332,12 @@ class _HomePageState extends State<HomePage> {
                       ),
                       child: AnimatedTextKit(
                         repeatForever: true,
-                        pause: const Duration(milliseconds: 2000),
+                        pause: const Duration(milliseconds: 1500),
                         animatedTexts: [
                           TyperAnimatedText('Flutter Developer'),
+                          TyperAnimatedText('Mobile App Developer'),
+                          TyperAnimatedText('BLoC/Cubit Specialist'),
+                          TyperAnimatedText('UI/UX Enthusiast'),
                         ],
                       ),
                     ),
@@ -358,13 +358,15 @@ class _HomePageState extends State<HomePage> {
                     _skillsTap("Flutter", "assets/skils/flutter.png"),
                     _skillsTap("Dart", "assets/skils/dart.png"),
                     _skillsTap("Firebase", "assets/skils/firebase.png"),
-                    _skillsTap("Bloc", "assets/skils/bloc.png"),
+                    _skillsTap("BLoC", "assets/skils/bloc.png"),
                     _skillsTap("GetX", "assets/skils/getX.png"),
                     _skillsTap("Github", "assets/skils/github.png"),
                     _skillsTap("Java", "assets/skils/java.png"),
                     _skillsTap("UI/UX", "assets/skils/ui.png"),
                     _skillsTap("Android", "assets/skils/social.png"),
-                    _skillsTap("IOS", "assets/skils/apple.png"),
+                    _skillsTap("iOS", "assets/skils/apple.png"),
+                    _skillsTap("Postman", "assets/skils/postman.png"),
+                    _skillsTap("Razorpay", "assets/skils/razorpay.png"),
                   ],
                 ),
                 boxH20(),
@@ -382,9 +384,10 @@ class _HomePageState extends State<HomePage> {
                     const Text(
                       "E  X  P  E  R  I  E  N  C  E",
                       style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black87,
-                          fontWeight: FontWeight.bold),
+                        fontSize: 16,
+                        color: Colors.black87,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
@@ -393,6 +396,17 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Divider(color: Colors.grey.shade200, thickness: 2),
+          // About Me Section
+          Container(
+            key: _aboutKey,
+            width: size.width,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            color: Colors.grey.shade50,
+            alignment: Alignment.center,
+            child: const AboutMeSection(),
+          ),
+          Divider(color: Colors.grey.shade200, thickness: 2),
+          // Experience Section
           Container(
             key: _experienceKey,
             width: size.width,
@@ -432,8 +446,8 @@ class _HomePageState extends State<HomePage> {
         style: ButtonStyle(
           overlayColor: MaterialStateProperty.all(Colors.teal.withOpacity(0.1)),
           foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                (Set<MaterialState> states) {
-              return states.contains(MaterialState.hovered)
+                (Set<WidgetState> states) {
+              return states.contains(WidgetState.hovered)
                   ? Colors.teal
                   : Colors.black87;
             },
@@ -444,7 +458,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _skillsTap(String title, String ioc_img) {
+  Widget _skillsTap(String title, String iconImg) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: TextButton.icon(
@@ -452,8 +466,8 @@ class _HomePageState extends State<HomePage> {
         style: ButtonStyle(
           overlayColor: MaterialStateProperty.all(Colors.teal.withOpacity(0.1)),
           foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                (Set<MaterialState> states) {
-              return states.contains(MaterialState.hovered)
+                (Set<WidgetState> states) {
+              return states.contains(WidgetState.hovered)
                   ? Colors.teal
                   : Colors.black87;
             },
@@ -463,10 +477,7 @@ class _HomePageState extends State<HomePage> {
           title,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
-        icon: Image.asset(
-          ioc_img,
-          height: 30,
-        ),
+        icon: Image.asset(iconImg, height: 30),
       ),
     );
   }

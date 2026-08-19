@@ -1,27 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portfolio/pages/about_me.dart';
-import 'package:portfolio/utils/CommonSizedBox.dart'; // Assuming this provides boxH() helpers
 
 class ExperienceScreen extends StatelessWidget {
   const ExperienceScreen({super.key});
 
   final List<Map<String, dynamic>> experiences = const [
     {
-      'company': 'Samruddh Bharat Technologies Pvt Ltd',
+      'company': 'Samruddh Bharat Technologies Pvt. Ltd.',
       'location': 'Pune, India',
       'role': 'Jr. Flutter Developer',
-      'duration': 'July 2025 - Present',
+      'duration': 'July 2025 – Present',
       'icon': Icons.work_outline_rounded,
-      'color': Colors.orange,
+      'color': Colors.teal,
+      'techStack': 'Flutter • Dart • BLoC/Cubit • REST APIs • Firebase • Payment Gateway • Git',
+      'highlights': [
+        'Contributed to Flutter apps for Goa Government digital initiatives — 2 apps deployed to production.',
+        'Architected scalable features using BLoC/Cubit and clean architecture principles.',
+        'Developed dynamic, API-driven UIs and reusable widget libraries for consistency.',
+        'Integrated REST APIs, payment gateways, Firebase services, and third-party SDKs.',
+      ],
     },
     {
       'company': 'Geobull Innovations LLP',
       'location': 'Pune, India',
       'role': 'Jr. Flutter Developer',
-      'duration': 'May 2024 - July 2025',
+      'duration': 'May 2024 – July 2025',
       'icon': Icons.work_outline_rounded,
       'color': Colors.orange,
+      'techStack': 'Flutter • Dart • GetX • REST APIs • Google Maps SDK • Android Studio • Git',
+      'highlights': [
+        'Built and maintained Flutter apps including an English Learning app and a Real Estate app.',
+        'Integrated RESTful APIs, GetX state management, and Google Maps SDK for location features.',
+        'Collaborated with cross-functional teams to ship features, resolve bugs, and improve quality.',
+      ],
     },
   ];
 
@@ -48,112 +60,137 @@ class ExperienceScreen extends StatelessWidget {
             style: GoogleFonts.poppins(fontSize: 16, color: Colors.black54),
           ),
           boxH(40),
-          // --- MODIFIED: Using a new widget for the list ---
           _buildExperienceList(),
         ],
       ),
     );
   }
 
-  // --- NEW WIDGET: Builds the list of experience cards ---
   Widget _buildExperienceList() {
     return Container(
-      constraints: const BoxConstraints(maxWidth: 800),
+      constraints: const BoxConstraints(maxWidth: 860),
       child: Column(
         children: experiences.map((exp) {
           return Padding(
-            padding: const EdgeInsets.only(bottom: 20.0),
-            child: _buildExperienceCard(
-              icon: exp['icon'],
-              role: exp['role'],
-              company: exp['company'],
-              duration: exp['duration'],
-              location: exp['location'],
-              color: exp['color'],
-            ),
+            padding: const EdgeInsets.only(bottom: 24.0),
+            child: _buildExperienceCard(exp),
           );
         }).toList(),
       ),
     );
   }
 
-  // --- NEW WIDGET: Defines the appearance of a single experience card ---
-  Widget _buildExperienceCard({
-    required IconData icon,
-    required String role,
-    required String company,
-    required String duration,
-    required String location,
-    required Color color,
-  }) {
+  Widget _buildExperienceCard(Map<String, dynamic> exp) {
+    final Color color = exp['color'] as Color;
+    final List<String> highlights = List<String>.from(exp['highlights']);
+
     return Card(
       elevation: 4,
       shadowColor: Colors.black.withOpacity(0.1),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.grey.shade50,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
+          border: Border(left: BorderSide(color: color, width: 4)),
         ),
-        padding: const EdgeInsets.all(20),
-        child: Row(
+        padding: const EdgeInsets.all(24),
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Icon on the left
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: color.withOpacity(0.1),
-              ),
-              child: Icon(icon, color: color, size: 28),
+            // Header Row
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: color.withOpacity(0.12),
+                  ),
+                  child: Icon(exp['icon'] as IconData, color: color, size: 26),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        exp['role'] as String,
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      boxH(2),
+                      Text(
+                        exp['company'] as String,
+                        style: GoogleFonts.poppins(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: color,
+                        ),
+                      ),
+                      boxH(8),
+                      Row(
+                        children: [
+                          Icon(Icons.calendar_today_outlined,
+                              size: 13, color: Colors.grey.shade600),
+                          const SizedBox(width: 6),
+                          Text(
+                            exp['duration'] as String,
+                            style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                          ),
+                          const SizedBox(width: 16),
+                          Icon(Icons.location_on_outlined,
+                              size: 13, color: Colors.grey.shade600),
+                          const SizedBox(width: 6),
+                          Text(
+                            exp['location'] as String,
+                            style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 20),
-            // Details on the right
-            Expanded(
-              child: Column(
+            const Divider(height: 28, thickness: 0.5),
+            // Highlights
+            ...highlights.map((h) => Padding(
+              padding: const EdgeInsets.only(bottom: 6),
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    role,
-                    style: GoogleFonts.poppins(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                  Icon(Icons.arrow_right_rounded, color: color, size: 20),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                      h,
+                      style: const TextStyle(
+                          fontSize: 13.5, color: Colors.black87, height: 1.5),
                     ),
-                  ),
-                  boxH(4),
-                  Text(
-                    company,
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black54,
-                    ),
-                  ),
-                  boxH(12),
-                  Row(
-                    children: [
-                      Icon(Icons.calendar_today_outlined, size: 14, color: Colors.grey.shade600),
-                      const SizedBox(width: 8),
-                      Text(
-                        duration,
-                        style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
-                      ),
-                    ],
-                  ),
-                  boxH(8),
-                  Row(
-                    children: [
-                      Icon(Icons.location_on_outlined, size: 14, color: Colors.grey.shade600),
-                      const SizedBox(width: 8),
-                      Text(
-                        location,
-                        style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
-                      ),
-                    ],
                   ),
                 ],
+              ),
+            )),
+            boxH(12),
+            // Tech Stack chip
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.08),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                exp['techStack'] as String,
+                style: TextStyle(
+                    fontSize: 12,
+                    color: color,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.3),
               ),
             ),
           ],

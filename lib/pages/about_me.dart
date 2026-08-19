@@ -1,44 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-// Helper for consistent spacing
 Widget boxH(double height) => SizedBox(height: height);
 Widget boxW(double width) => SizedBox(width: width);
 
 class AboutMeSection extends StatelessWidget {
   const AboutMeSection({super.key});
 
-  // Data for expertise items - easy to update!
   final List<Map<String, dynamic>> expertiseData = const [
     {
       'icon': Icons.code_rounded,
       'title': 'Dart & Flutter',
       'description':
-      'Strong foundation in Dart and the Flutter framework for building high-performance, cross-platform apps.',
+      'Strong foundation in Dart and the Flutter framework for building high-performance, cross-platform mobile applications for Android & iOS.',
     },
     {
       'icon': Icons.sync_alt_rounded,
       'title': 'State Management',
       'description':
-      'Proficient with modern state management solutions like GetX and Provider to build scalable and maintainable apps.',
+      'Proficient with BLoC/Cubit, GetX, and Provider for building scalable, maintainable, and testable apps with clean separation of concerns.',
+    },
+    {
+      'icon': Icons.architecture_rounded,
+      'title': 'Clean Architecture',
+      'description':
+      'Experienced in implementing MVVM/MVC and clean architecture principles to improve code maintainability and long-term scalability.',
     },
     {
       'icon': Icons.phonelink_setup_rounded,
       'title': 'Responsive UI/UX',
       'description':
-      'Skilled in crafting responsive layouts and intuitive user experiences that work seamlessly across devices.',
+      'Skilled in crafting responsive layouts and intuitive user experiences with reusable widget libraries that work seamlessly across devices.',
     },
     {
       'icon': Icons.http_rounded,
-      'title': 'RESTful APIs',
+      'title': 'RESTful APIs & Firebase',
       'description':
-      'Experienced in integrating with RESTful APIs to fetch and display dynamic data efficiently.',
+      'Experienced in integrating RESTful APIs, Firebase services, payment gateways (Razorpay), and third-party SDKs like Google Maps.',
     },
     {
       'icon': Icons.bug_report_rounded,
       'title': 'Testing & Optimization',
       'description':
-      'Focused on app performance, reducing widget rebuilds, and writing unit tests for quality and stability.',
+      'Focused on app performance, reducing widget rebuilds, debugging, and writing unit tests to ensure quality and stability.',
     },
   ];
 
@@ -47,7 +51,6 @@ class AboutMeSection extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Container(
-      key: GlobalKey(), // Replace with your _aboutKey
       width: size.width,
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 80),
       color: Colors.grey[50],
@@ -95,9 +98,8 @@ class AboutMeSection extends StatelessWidget {
                     const CircleAvatar(
                       radius: 50,
                       backgroundColor: Colors.teal,
-                      // TODO: Replace with your actual image URL
-                      backgroundImage: NetworkImage(
-                          'https://via.placeholder.com/150'),
+                      // TODO: Replace with your actual image URL or asset
+                      backgroundImage: NetworkImage('https://via.placeholder.com/150'),
                     ),
                     boxW(24),
                     Expanded(
@@ -114,11 +116,11 @@ class AboutMeSection extends StatelessWidget {
                           ),
                           boxH(8),
                           const Text(
-                            'I am a passionate Flutter Developer creating scalable, high-performance mobile applications. I thrive on building clean, maintainable code and collaborating with teams to deliver apps that exceed client expectations.',
+                            'I am a Flutter Developer with 2 years of experience in mobile application development, specializing in Flutter, Dart, BLoC/Cubit, GetX, RESTful APIs, Firebase, and responsive UI/UX. I thrive on building scalable, maintainable, and high-performance apps while collaborating with cross-functional teams to deliver exceptional user experiences.',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 15,
                               color: Colors.black54,
-                              height: 1.6,
+                              height: 1.65,
                             ),
                           ),
                         ],
@@ -142,8 +144,8 @@ class AboutMeSection extends StatelessWidget {
                     ),
                     boxH(20),
                     Wrap(
-                      spacing: 20, // Horizontal space between items
-                      runSpacing: 20, // Vertical space between lines
+                      spacing: 20,
+                      runSpacing: 20,
                       alignment: WrapAlignment.center,
                       children: expertiseData.map((skill) {
                         return _buildExpertiseTile(
@@ -163,14 +165,13 @@ class AboutMeSection extends StatelessWidget {
     );
   }
 
-  // A reusable widget for each expertise item
   Widget _buildExpertiseTile({
     required IconData icon,
     required String title,
     required String description,
   }) {
     return Container(
-      width: 260, // Fixed width for each item
+      width: 260,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.grey.shade50,

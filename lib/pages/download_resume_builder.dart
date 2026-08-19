@@ -46,7 +46,7 @@ class _DownloadResumeBuilderState extends State<DownloadResumeBuilder> {
                 Get.find<HomeController>().isLoading.value = false;
               });
               _launchURL(
-                "https://docs.google.com/document/d/1G1nYW6EP7E1LRsP-SAM2rPNxk46XbU6lmKKVDZ-2W3I/edit?usp=sharing",
+                "https://drive.google.com/file/d/1NL0UF7olWxkc_DCSRplTx4rkAHsRjekV/view?usp=sharing",
               );
             },
             child: const Text("Download Resume"),
